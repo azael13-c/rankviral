@@ -817,25 +817,25 @@ function navigateTo(pageId) {
 
   // Optional popunder: only on Top10s / Rankings, once per session
   if (pageId === 'top10' || pageId === 'rankings') {
-    loadPopunderOnce();
+    // popunder on the same user click (required by browsers)
+    if (!window.__popunderFired) {
+      window.__popunderFired = true;
+      injectExternalScript('https://pl28913959.effectivegatecpm.com/df/c2/c1/dfc2c10d274b96c70d2416fa8225a02a.js');
+    }
+  } else {
+    // allow it again next time user enters Top10s or Rankings
+    window.__popunderFired = false;
   }
 }
 
-function loadPopunderOnce() {
-  if (sessionStorage.getItem('rv_popunder_shown')) return;
-  if (window.__popunderScheduled) return;
-  window.__popunderScheduled = true;
-  window.__popunderTimer = setTimeout(() => {
-    sessionStorage.setItem('rv_popunder_shown', '1');
-    injectExternalScript('https://pl28913959.effectivegatecpm.com/df/c2/c1/dfc2c10d274b96c70d2416fa8225a02a.js');
-  }, 2000);
-}
+function loadPopunderOnce() {}
 
 function injectExternalScript(src) {
   if (document.querySelector(`script[src="${src}"]`)) return;
   const s = document.createElement('script');
   s.src = src;
-  s.async = true;
+  s.async = false;
+  s.defer = false;
   document.head.appendChild(s);
 }
 
