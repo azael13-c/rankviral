@@ -1187,6 +1187,7 @@ async function updateAuthUI() {
   const logoutBtnMobile = document.getElementById('profile-logout-mobile');
   const chipMobile = document.getElementById('profile-chip-mobile');
   const avatarMobile = document.getElementById('profile-avatar-mobile');
+  const isMobile = window.matchMedia('(max-width: 780px)').matches;
 
   if (!token) {
     btns.forEach(b => b.style.display = '');
@@ -1200,7 +1201,7 @@ async function updateAuthUI() {
   btns.forEach(b => b.style.display = 'none');
   if (logoutBtn) logoutBtn.style.display = 'inline-flex';
   if (logoutBtnMobile) logoutBtnMobile.style.display = 'inline-flex';
-  if (chipMobile) chipMobile.style.display = 'inline-flex';
+  if (chipMobile) chipMobile.style.display = isMobile ? 'inline-flex' : 'none';
 
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
@@ -1245,6 +1246,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAuthFromUrl();
   loadPoll();
   navigateTo('home');
+  window.addEventListener('resize', updateAuthUI);
 });
 
 function updateHeroDate() {
