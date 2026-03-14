@@ -823,8 +823,10 @@ function navigateTo(pageId) {
 
 function loadPopunderOnce() {
   if (sessionStorage.getItem('rv_popunder_shown')) return;
-  sessionStorage.setItem('rv_popunder_shown', '1');
-  setTimeout(() => {
+  if (window.__popunderScheduled) return;
+  window.__popunderScheduled = true;
+  window.__popunderTimer = setTimeout(() => {
+    sessionStorage.setItem('rv_popunder_shown', '1');
     injectExternalScript('https://pl28913959.effectivegatecpm.com/df/c2/c1/dfc2c10d274b96c70d2416fa8225a02a.js');
   }, 2000);
 }
