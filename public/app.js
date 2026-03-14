@@ -817,6 +817,8 @@ function navigateTo(pageId) {
 
   if (pageId === 'top10' || pageId === 'rankings') {
     armPopunderFallback();
+  } else {
+    disarmPopunderFallback();
   }
 }
 
@@ -840,6 +842,10 @@ function armPopunderFallback() {
   };
   document.addEventListener('click', handler, true);
   document.addEventListener('touchstart', handler, true);
+}
+
+function disarmPopunderFallback() {
+  window.__popunderFallbackArmed = false;
 }
 
 function injectPopunderScript() {
