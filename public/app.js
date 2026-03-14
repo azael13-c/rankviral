@@ -1183,16 +1183,20 @@ async function updateAuthUI() {
   const btns = document.querySelectorAll('.google-btn');
   const chip = document.getElementById('profile-chip');
   const avatar = document.getElementById('profile-avatar');
-  const menu = document.getElementById('profile-menu');
+  const logoutBtn = document.getElementById('profile-logout');
+  const logoutBtnMobile = document.getElementById('profile-logout-mobile');
 
   if (!token) {
     btns.forEach(b => b.style.display = '');
     if (chip) chip.style.display = 'none';
-    if (menu) menu.classList.remove('open');
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (logoutBtnMobile) logoutBtnMobile.style.display = 'none';
     return;
   }
 
   btns.forEach(b => b.style.display = 'none');
+  if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+  if (logoutBtnMobile) logoutBtnMobile.style.display = 'inline-flex';
 
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
@@ -1207,17 +1211,9 @@ async function updateAuthUI() {
   }
 }
 
-function toggleProfileMenu(e) {
-  if (e) e.stopPropagation();
-  const menu = document.getElementById('profile-menu');
-  if (menu) menu.classList.toggle('open');
-}
-
 function logout(e) {
   if (e) e.stopPropagation();
   localStorage.removeItem('rv_token');
-  const menu = document.getElementById('profile-menu');
-  if (menu) menu.classList.remove('open');
   updateAuthUI();
 }
 
@@ -1232,10 +1228,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeArticle();
 });
 
-document.addEventListener('click', () => {
-  const menu = document.getElementById('profile-menu');
-  if (menu) menu.classList.remove('open');
-});
 
 /* ── INIT ────────────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {

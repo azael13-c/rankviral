@@ -12,35 +12,34 @@
 <header id="site-header">
   <div class="header-inner">
     <div class="header-left">
-      <div id="profile-chip" class="profile-chip" style="display:none" onclick="toggleProfileMenu(event)">
-        <img id="profile-avatar" class="profile-avatar" alt="Perfil">
-        <div id="profile-menu" class="profile-menu">
-          <button class="profile-item" onclick="logout(event)">Cerrar sesión</button>
-        </div>
-      </div>
       <a href="#" class="site-logo" onclick="navigateTo('home');return false;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z" fill="#E8271E"/></svg>
         <span class="logo-word">Rank<b>Viral</b></span>
         <span class="logo-live">🔥 LIVE</span>
       </a>
+      <div id="profile-chip" class="profile-chip" style="display:none">
+        <img id="profile-avatar" class="profile-avatar" alt="Perfil">
+      </div>
     </div>
     <nav class="main-nav">
       <a href="#" class="nav-link active" data-page="home"      onclick="navigateTo('home');return false;">Inicio</a>
-        <a href="#" class="nav-link"        data-page="top10"     onclick="triggerPopunderAndNavigate('top10');return false;">Top 10s</a>
-        <a href="#" class="nav-link"        data-page="rankings"  onclick="triggerPopunderAndNavigate('rankings');return false;">Rankings</a>
+      <a href="#" class="nav-link"        data-page="top10"     onclick="triggerPopunderAndNavigate('top10');return false;">Top 10s</a>
+      <a href="#" class="nav-link"        data-page="rankings"  onclick="triggerPopunderAndNavigate('rankings');return false;">Rankings</a>
       <a href="#" class="nav-link"        data-page="viral"     onclick="navigateTo('viral');return false;">Viral</a>
       <a href="#" class="nav-link"        data-page="contacto"  onclick="navigateTo('contacto');return false;">Contacto</a>
+      <button id="profile-logout" class="nav-link profile-logout" onclick="logout(event)" style="display:none">Cerrar sesión</button>
     </nav>
     <button class="hamburger" onclick="toggleMobileNav()">☰</button>
   </div>
-  <nav class="mobile-nav">
-    <a href="#" class="nav-link" data-page="home"       onclick="navigateTo('home');return false;">Inicio</a>
+    <nav class="mobile-nav">
+      <a href="#" class="nav-link" data-page="home"       onclick="navigateTo('home');return false;">Inicio</a>
       <a href="#" class="nav-link" data-page="top10"      onclick="triggerPopunderAndNavigate('top10');return false;">Top 10s</a>
       <a href="#" class="nav-link" data-page="rankings"   onclick="triggerPopunderAndNavigate('rankings');return false;">Rankings</a>
-    <a href="#" class="nav-link" data-page="viral"      onclick="navigateTo('viral');return false;">Viral</a>
-    <a href="#" class="nav-link" data-page="privacidad" onclick="navigateTo('privacidad');return false;">Privacidad</a>
-    <a href="#" class="nav-link" data-page="contacto"   onclick="navigateTo('contacto');return false;">Contacto</a>
-  </nav>
+      <a href="#" class="nav-link" data-page="viral"      onclick="navigateTo('viral');return false;">Viral</a>
+      <a href="#" class="nav-link" data-page="privacidad" onclick="navigateTo('privacidad');return false;">Privacidad</a>
+      <a href="#" class="nav-link" data-page="contacto"   onclick="navigateTo('contacto');return false;">Contacto</a>
+      <button id="profile-logout-mobile" class="nav-link profile-logout" onclick="logout(event)" style="display:none">Cerrar sesión</button>
+    </nav>
 </header>
 
 <div class="ticker-bar">
