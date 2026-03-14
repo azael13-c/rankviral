@@ -399,6 +399,16 @@ body::after {
   font-size: 1rem; color: var(--muted);
   max-width: 480px; margin: 0 auto 36px; line-height: 1.65;
 }
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: -10px auto 28px;
+}
+.hero-google { padding: 10px 16px; }
+.hero-note { font-size: .78rem; color: var(--muted); }
 .hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
 .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--yellow); line-height: 1; }
 .stat-lbl { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
