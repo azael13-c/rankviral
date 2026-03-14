@@ -1185,18 +1185,22 @@ async function updateAuthUI() {
   const avatar = document.getElementById('profile-avatar');
   const logoutBtn = document.getElementById('profile-logout');
   const logoutBtnMobile = document.getElementById('profile-logout-mobile');
+  const chipMobile = document.getElementById('profile-chip-mobile');
+  const avatarMobile = document.getElementById('profile-avatar-mobile');
 
   if (!token) {
     btns.forEach(b => b.style.display = '');
     if (chip) chip.style.display = 'none';
     if (logoutBtn) logoutBtn.style.display = 'none';
     if (logoutBtnMobile) logoutBtnMobile.style.display = 'none';
+    if (chipMobile) chipMobile.style.display = 'none';
     return;
   }
 
   btns.forEach(b => b.style.display = 'none');
   if (logoutBtn) logoutBtn.style.display = 'inline-flex';
   if (logoutBtnMobile) logoutBtnMobile.style.display = 'inline-flex';
+  if (chipMobile) chipMobile.style.display = 'inline-flex';
 
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
@@ -1206,8 +1210,13 @@ async function updateAuthUI() {
       avatar.src = url || 'https://www.gravatar.com/avatar/?d=mp&f=y';
       avatar.alt = payload.name || payload.email || 'Perfil';
     }
+    if (avatarMobile) {
+      avatarMobile.src = url || 'https://www.gravatar.com/avatar/?d=mp&f=y';
+      avatarMobile.alt = payload.name || payload.email || 'Perfil';
+    }
   } catch (e) {
     if (chip) chip.style.display = 'none';
+    if (chipMobile) chipMobile.style.display = 'none';
   }
 }
 

@@ -25,11 +25,16 @@
       <a href="#" class="nav-link"        data-page="viral"     onclick="navigateTo('viral');return false;">Viral</a>
       <a href="#" class="nav-link"        data-page="contacto"  onclick="navigateTo('contacto');return false;">Contacto</a>
       <button id="profile-logout" class="nav-link profile-logout" onclick="logout(event)" style="display:none">Cerrar sesión</button>
-      <div id="profile-chip" class="profile-chip profile-chip-nav" style="display:none">
-        <img id="profile-avatar" class="profile-avatar" alt="Perfil">
-      </div>
+        <div id="profile-chip" class="profile-chip profile-chip-nav" style="display:none">
+          <img id="profile-avatar" class="profile-avatar" alt="Perfil">
+        </div>
     </nav>
-    <button class="hamburger" onclick="toggleMobileNav()">☰</button>
+    <div class="header-right">
+      <div id="profile-chip-mobile" class="profile-chip profile-chip-mobile" style="display:none">
+        <img id="profile-avatar-mobile" class="profile-avatar" alt="Perfil">
+      </div>
+      <button class="hamburger" onclick="toggleMobileNav()">☰</button>
+    </div>
   </div>
     <nav class="mobile-nav">
       <a href="#" class="nav-link" data-page="home"       onclick="navigateTo('home');return false;">Inicio</a>

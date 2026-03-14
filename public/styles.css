@@ -78,9 +78,11 @@ body::after {
   height: 62px;
 }
 .header-left { display: flex; align-items: center; gap: 10px; }
+.header-right { display: flex; align-items: center; gap: 10px; }
 .profile-chip { width: 26px; height: 26px; border-radius: 50%; overflow: hidden; border: 1px solid #2b2b2b; }
 .profile-chip { position: relative; cursor: pointer; margin-left: 8px; }
 .profile-chip-nav { margin-left: 6px; }
+.profile-chip-mobile { margin-left: 0; }
 .profile-avatar { width: 100%; height: 100%; object-fit: cover; display: block; }
 .profile-logout {
   background: none;
@@ -138,6 +140,8 @@ body::after {
 @media (max-width: 780px) {
   .main-nav { display: none; }
   .hamburger { display: block; }
+  .profile-chip-nav { display: none !important; }
+  .profile-chip-mobile { display: inline-flex !important; }
 }
 
 /* ══════════════════════════════════════════
@@ -564,7 +568,7 @@ body::after {
   position: sticky;
   top: 0;
   display: block;
-  height: calc(env(safe-area-inset-top) + 10px);
+  height: calc(env(safe-area-inset-top) + 14px);
   background: rgba(8,8,8,.97);
   z-index: 9;
 }
@@ -576,8 +580,8 @@ body::after {
   border-bottom: 2px solid var(--red);
   padding: 13px 24px;
   display: flex; align-items: center; gap: 16px;
-  position: sticky; top: calc(env(safe-area-inset-top) + 8px); z-index: 10;
-  margin-top: 8px;
+  position: sticky; top: calc(env(safe-area-inset-top) + 14px); z-index: 10;
+  margin-top: 14px;
 }
 .art-back {
   background: none; border: 1px solid var(--border2);
@@ -884,6 +888,6 @@ body::after {
   .nl-input { width: 100%; }
   .art-entry { flex-direction: column; }
   .ae-thumb { width: 100%; height: 140px; min-width: unset; }
-  .art-header { padding: 10px 14px; top: calc(env(safe-area-inset-top) + 10px); margin-top: 10px; }
+  .art-header { padding: 10px 14px; top: calc(env(safe-area-inset-top) + 14px); margin-top: 14px; }
   .profile-chip { margin-left: 16px; }
 }
