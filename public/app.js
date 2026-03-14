@@ -815,20 +815,40 @@ function navigateTo(pageId) {
   const mobileNav = document.querySelector('.mobile-nav');
   if (mobileNav) mobileNav.classList.remove('open');
 
-  // Optional popunder: only on Top10s / Rankings, once per session
   if (pageId === 'top10' || pageId === 'rankings') {
-    // popunder on the same user click (required by browsers)
-    if (!window.__popunderFired) {
-      window.__popunderFired = true;
-      injectExternalScript('https://pl28913959.effectivegatecpm.com/df/c2/c1/dfc2c10d274b96c70d2416fa8225a02a.js');
-    }
-  } else {
-    // allow it again next time user enters Top10s or Rankings
-    window.__popunderFired = false;
+    armPopunderFallback();
   }
 }
 
+function triggerPopunderAndNavigate(pageId) {
+  if (pageId === 'top10' || pageId === 'rankings') {
+    injectPopunderScript();
+  }
+  navigateTo(pageId);
+}
+
 function loadPopunderOnce() {}
+
+function armPopunderFallback() {
+  if (window.__popunderFallbackArmed) return;
+  window.__popunderFallbackArmed = true;
+  const handler = () => {
+    window.__popunderFallbackArmed = false;
+    document.removeEventListener('click', handler, true);
+    document.removeEventListener('touchstart', handler, true);
+    injectPopunderScript();
+  };
+  document.addEventListener('click', handler, true);
+  document.addEventListener('touchstart', handler, true);
+}
+
+function injectPopunderScript() {
+  const s = document.createElement('script');
+  s.src = 'https://pl28913959.effectivegatecpm.com/df/c2/c1/dfc2c10d274b96c70d2416fa8225a02a.js';
+  s.async = false;
+  s.defer = false;
+  document.body.appendChild(s);
+}
 
 function injectExternalScript(src) {
   if (document.querySelector(`script[src="${src}"]`)) return;
