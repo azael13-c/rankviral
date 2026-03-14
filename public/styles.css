@@ -447,8 +447,12 @@ body::after {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
   .google-btn:hover { border-color: #cfcfcf; }
+  .g-ico { width: 16px; height: 16px; display: inline-block; }
   .vote-note { font-size: .74rem; color: var(--muted); }
 .vote-opts { display: flex; flex-direction: column; gap: 10px; max-width: 530px; margin: 0 auto; }
 .vote-btn {
@@ -838,8 +842,19 @@ body::after {
 ══════════════════════════════════════════ */
 @media (max-width: 640px) {
   .hero-h1 { font-size: 3.2rem; }
-  .hero-stats { gap: 28px; }
+  .hero-sub { max-width: 100%; padding: 0 8px; }
+  .hero-actions { flex-direction: column; gap: 8px; }
+  .hero-google { width: 100%; justify-content: center; }
+  .hero-stats { gap: 18px; }
+  .stat-num { font-size: 2rem; }
   .sec-title { font-size: 1.55rem; }
+  .card-body { padding: 16px; }
+  .card-title { font-size: 1.05rem; }
+  .card-meta { font-size: .8rem; }
+  .vote-opts { max-width: 100%; }
+  .vote-btn { padding: 12px 14px; font-size: .92rem; }
+  .vote-login { flex-direction: column; gap: 8px; }
+  .google-btn { width: 100%; justify-content: center; }
   .vote-card { padding: 24px 16px; }
   .newsletter-wrap { padding: 32px 18px; }
   .nl-input { width: 100%; }
