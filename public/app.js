@@ -879,7 +879,18 @@ function openArticle(id) {
       : `<div class="art-cat">${art.cat}</div>
          <h1 class="art-title">${art.title}</h1>
          <p class="art-intro">${art.intro}</p>`}
-    <div class="art-mid-ad">[ ADSTERRA NATIVO / 300×250 — Pegar código aquí ]</div>
+    <div class="art-mid-ad">
+      <script>
+        atOptions = {
+          'key' : '7d21654217d5cdadb14bc8a97c4737ee',
+          'format' : 'iframe',
+          'height' : 90,
+          'width' : 728,
+          'params' : {}
+        };
+      </script>
+      <script src="https://www.highperformanceformat.com/7d21654217d5cdadb14bc8a97c4737ee/invoke.js"></script>
+    </div>
     ${entries}
   `;
 
