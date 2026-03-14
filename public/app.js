@@ -1171,10 +1171,54 @@ function initAuthFromUrl() {
     const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}${window.location.hash}`;
     window.history.replaceState({}, '', newUrl);
   }
+  updateAuthUI();
 }
 
 function loginWithGoogle() {
   window.location.href = `${API_BASE}/auth/google`;
+}
+
+async function updateAuthUI() {
+  const token = getAuthToken();
+  const btns = document.querySelectorAll('.google-btn');
+  const chip = document.getElementById('profile-chip');
+  const avatar = document.getElementById('profile-avatar');
+  const menu = document.getElementById('profile-menu');
+
+  if (!token) {
+    btns.forEach(b => b.style.display = '');
+    if (chip) chip.style.display = 'none';
+    if (menu) menu.classList.remove('open');
+    return;
+  }
+
+  btns.forEach(b => b.style.display = 'none');
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const url = payload.avatar_url || payload.picture || '';
+    if (chip) chip.style.display = 'inline-flex';
+    if (avatar) {
+      avatar.src = url || 'https://www.gravatar.com/avatar/?d=mp&f=y';
+      avatar.alt = payload.name || payload.email || 'Perfil';
+    }
+  } catch (e) {
+    if (chip) chip.style.display = 'none';
+  }
+}
+
+function toggleProfileMenu(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('profile-menu');
+  if (menu) menu.classList.toggle('open');
+}
+
+function logout(e) {
+  if (e) e.stopPropagation();
+  localStorage.removeItem('rv_token');
+  const menu = document.getElementById('profile-menu');
+  if (menu) menu.classList.remove('open');
+  updateAuthUI();
 }
 
 /* ── HAMBURGER ───────────────────────────────────────────────────────── */
@@ -1186,6 +1230,11 @@ function toggleMobileNav() {
 /* ── KEYBOARD NAV ────────────────────────────────────────────────────── */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeArticle();
+});
+
+document.addEventListener('click', () => {
+  const menu = document.getElementById('profile-menu');
+  if (menu) menu.classList.remove('open');
 });
 
 /* ── INIT ────────────────────────────────────────────────────────────── */
