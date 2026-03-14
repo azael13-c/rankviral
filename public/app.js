@@ -1190,7 +1190,31 @@ document.addEventListener('keydown', e => {
 
 /* ── INIT ────────────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  updateHeroDate();
+  scheduleHeroDateUpdate();
   initAuthFromUrl();
   loadPoll();
   navigateTo('home');
 });
+
+function updateHeroDate() {
+  const el = document.getElementById('hero-date');
+  if (!el) return;
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  let month = now.toLocaleString('es-ES', { month: 'short' });
+  month = month.charAt(0).toUpperCase() + month.slice(1);
+  const year = now.getFullYear();
+  el.textContent = `● Actualizado hoy · ${day} ${month} ${year}`;
+}
+
+function scheduleHeroDateUpdate() {
+  const now = new Date();
+  const next = new Date(now);
+  next.setHours(24, 0, 0, 0);
+  const ms = next.getTime() - now.getTime();
+  setTimeout(() => {
+    updateHeroDate();
+    setInterval(updateHeroDate, 24 * 60 * 60 * 1000);
+  }, ms + 1000);
+}
