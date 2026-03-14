@@ -814,6 +814,27 @@ function navigateTo(pageId) {
   // close mobile nav
   const mobileNav = document.querySelector('.mobile-nav');
   if (mobileNav) mobileNav.classList.remove('open');
+
+  // Optional popunder: only on Top10s / Rankings, once per session
+  if (pageId === 'top10' || pageId === 'rankings') {
+    loadPopunderOnce();
+  }
+}
+
+function loadPopunderOnce() {
+  if (sessionStorage.getItem('rv_popunder_shown')) return;
+  sessionStorage.setItem('rv_popunder_shown', '1');
+  setTimeout(() => {
+    injectExternalScript('https://pl28913959.effectivegatecpm.com/df/c2/c1/dfc2c10d274b96c70d2416fa8225a02a.js');
+  }, 2000);
+}
+
+function injectExternalScript(src) {
+  if (document.querySelector(`script[src="${src}"]`)) return;
+  const s = document.createElement('script');
+  s.src = src;
+  s.async = true;
+  document.head.appendChild(s);
 }
 
 /* ── ARTICLE OVERLAY ─────────────────────────────────────────────────── */
@@ -879,25 +900,23 @@ function openArticle(id) {
       : `<div class="art-cat">${art.cat}</div>
          <h1 class="art-title">${art.title}</h1>
          <p class="art-intro">${art.intro}</p>`}
-    <div class="art-mid-ad">
-      <script>
-        atOptions = {
-          'key' : '7d21654217d5cdadb14bc8a97c4737ee',
-          'format' : 'iframe',
-          'height' : 90,
-          'width' : 728,
-          'params' : {}
-        };
-      </script>
-      <script src="https://www.highperformanceformat.com/7d21654217d5cdadb14bc8a97c4737ee/invoke.js"></script>
-    </div>
+    <div class="art-mid-ad" data-ad-key="cabeee1ef0db1e9fa5183f483431ac34" data-ad-w="320" data-ad-h="50"></div>
     ${entries}
   `;
 
   const overlay = document.getElementById('article-overlay');
   overlay.classList.add('open');
   overlay.scrollTop = 0;
-  document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
+    // Inject Adsterra inside article (scripts in innerHTML don't execute)
+    const adEl = document.querySelector('.art-mid-ad');
+    if (adEl) {
+      const key = adEl.getAttribute('data-ad-key');
+      const w = parseInt(adEl.getAttribute('data-ad-w') || '320', 10);
+      const h = parseInt(adEl.getAttribute('data-ad-h') || '50', 10);
+      injectAdsterra(adEl, key, w, h);
+    }
 
   if (id === 'animals') {
     const content = document.getElementById('art-content');
@@ -963,6 +982,26 @@ function openArticle(id) {
       window.__paisesHideTimer = setTimeout(hidePaisesVideo, 8000);
     }
   }
+}
+
+function injectAdsterra(container, key, width, height) {
+  if (!container || !key) return;
+  container.innerHTML = '';
+  const opts = {
+    key,
+    format: 'iframe',
+    height,
+    width,
+    params: {}
+  };
+  const optsScript = document.createElement('script');
+  optsScript.type = 'text/javascript';
+  optsScript.text = `atOptions = ${JSON.stringify(opts)};`;
+  const invokeScript = document.createElement('script');
+  invokeScript.type = 'text/javascript';
+  invokeScript.src = `https://www.highperformanceformat.com/${key}/invoke.js`;
+  container.appendChild(optsScript);
+  container.appendChild(invokeScript);
 }
 
   if (id === 'animalsExtinct') {
