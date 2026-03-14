@@ -418,7 +418,28 @@ body::after {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 1.95rem; margin-bottom: 8px;
 }
-.vote-hint { font-size: .82rem; color: var(--muted); margin-bottom: 24px; }
+  .vote-hint { font-size: .82rem; color: var(--muted); margin-bottom: 24px; }
+  .vote-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: -10px 0 22px;
+  }
+  .google-btn {
+    background: #fff;
+    color: #111;
+    border: 1px solid #e1e1e1;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+  }
+  .google-btn:hover { border-color: #cfcfcf; }
+  .vote-note { font-size: .74rem; color: var(--muted); }
 .vote-opts { display: flex; flex-direction: column; gap: 10px; max-width: 530px; margin: 0 auto; }
 .vote-btn {
   background: var(--card2);

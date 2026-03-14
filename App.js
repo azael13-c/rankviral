@@ -3,6 +3,8 @@
    ═══════════════════════════════════════════ */
 'use strict';
 
+const API_BASE = 'https://rankviral.onrender.com';
+
 /* ── SVG ILLUSTRATION LIBRARY ─────────────────────────────────────────────
    Icon library to replace emojis.
 ──────────────────────────────────────────────────────────────────────────── */
@@ -999,38 +1001,78 @@ function closeArticle() {
 }
 
 /* ── VOTE ─────────────────────────────────────────────────────────────── */
-const voteData = [42, 31, 18, 9];
-let voteTot = 12847, hasVoted = false;
+let hasVoted = false;
+const POLL_KEY = 'threats';
 
-function vote(idx) {
+function getAuthToken() {
+  return localStorage.getItem('rv_token');
+}
+
+function updateVoteUI(results, total) {
+  const byKey = {};
+  results.forEach(r => { byKey[r.key] = r; });
+  document.querySelectorAll('.vote-btn').forEach(btn => {
+    const key = btn.dataset.option;
+    const item = byKey[key];
+    if (!item) return;
+    const bar = btn.querySelector('.v-bar');
+    const pct = btn.querySelector('.v-pct');
+    if (bar) bar.style.width = item.percent + '%';
+    if (pct) pct.textContent = item.percent + '%';
+  });
+  document.querySelectorAll('.vote-total').forEach(el => {
+    el.textContent = total.toLocaleString('es') + ' votos registrados';
+  });
+}
+
+async function loadPoll() {
+  try {
+    const res = await fetch(`${API_BASE}/polls/${POLL_KEY}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    updateVoteUI(data.results, data.total);
+  } catch (e) {
+    // ignore network errors
+  }
+}
+
+async function vote(optionKey) {
   if (hasVoted) return;
   hasVoted = true;
-  voteData[idx]++;
-  voteTot++;
-  const sum = voteData.reduce((a,b) => a+b, 0);
-  voteData.forEach((v, i) => {
-    const pct = Math.round(v / sum * 100);
-    const bar = document.getElementById('vbar' + i);
-    const pctEl = document.getElementById('vpct' + i);
-    if (bar) bar.style.width = pct + '%';
-    if (pctEl) pctEl.textContent = pct + '%';
-  });
-  const btn = document.querySelectorAll('.vote-btn')[idx];
-  if (btn) btn.classList.add('voted');
-  document.querySelectorAll('.vote-btn').forEach(b => b.disabled = true);
-  const totEl = document.getElementById('vote-total');
-  if (totEl) totEl.textContent = voteTot.toLocaleString('es') + ' votos registrados';
+  const token = getAuthToken();
+  try {
+    const res = await fetch(`${API_BASE}/polls/${POLL_KEY}/vote`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ option_key: optionKey }),
+    });
+    if (!res.ok) throw new Error('vote_failed');
+    await loadPoll();
+    document.querySelectorAll('.vote-btn').forEach(b => b.disabled = true);
+  } catch (e) {
+    hasVoted = false;
+  }
 }
 
 /* ── NEWSLETTER ──────────────────────────────────────────────────────── */
 function handleNewsletter(e) {
   e.preventDefault();
-  const input = document.getElementById('nl-email');
+  const form = e.target;
+  const input = form ? form.querySelector('input[type="email"]') : document.getElementById('nl-email');
   const email = input ? input.value.trim() : '';
   if (!email || !email.includes('@')) {
     if (input) { input.style.borderColor = '#E8271E'; input.focus(); }
     return;
   }
+
+  fetch(`${API_BASE}/newsletter/subscribe`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  }).catch(() => {});
 
   const formWrap = document.querySelector('.nl-shown-form');
   const successWrap = document.querySelector('.nl-success');
@@ -1050,6 +1092,42 @@ function handleNewsletter(e) {
   }
 }
 
+/* ── CONTACT ───────────────────────────────────────────────────────────── */
+function handleContact(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const name = (document.getElementById('cf-name') || {}).value || '';
+  const email = (document.getElementById('cf-email') || {}).value || '';
+  const message = (document.getElementById('cf-msg') || {}).value || '';
+  if (!name.trim() || !email.trim() || !message.trim()) return;
+  fetch(`${API_BASE}/contact`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: name.trim(), email: email.trim(), message: message.trim() }),
+  }).catch(() => {});
+  const nameEl = document.getElementById('cf-name');
+  const emailEl = document.getElementById('cf-email');
+  const msgEl = document.getElementById('cf-msg');
+  if (nameEl) nameEl.value = '';
+  if (emailEl) emailEl.value = '';
+  if (msgEl) msgEl.value = '';
+}
+
+/* ── AUTH (GOOGLE) ─────────────────────────────────────────────────────── */
+function initAuthFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  if (token) {
+    localStorage.setItem('rv_token', token);
+    params.delete('token');
+    const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}${window.location.hash}`;
+    window.history.replaceState({}, '', newUrl);
+  }
+}
+
+function loginWithGoogle() {
+  window.location.href = `${API_BASE}/auth/google`;
+}
+
 /* ── HAMBURGER ───────────────────────────────────────────────────────── */
 function toggleMobileNav() {
   const mobileNav = document.querySelector('.mobile-nav');
@@ -1063,5 +1141,7 @@ document.addEventListener('keydown', e => {
 
 /* ── INIT ────────────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  initAuthFromUrl();
+  loadPoll();
   navigateTo('home');
 });
