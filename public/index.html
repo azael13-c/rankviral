@@ -17,9 +17,6 @@
         <span class="logo-word">Rank<b>Viral</b></span>
         <span class="logo-live">🔥 LIVE</span>
       </a>
-      <div id="profile-chip" class="profile-chip" style="display:none">
-        <img id="profile-avatar" class="profile-avatar" alt="Perfil">
-      </div>
     </div>
     <nav class="main-nav">
       <a href="#" class="nav-link active" data-page="home"      onclick="navigateTo('home');return false;">Inicio</a>
@@ -28,6 +25,9 @@
       <a href="#" class="nav-link"        data-page="viral"     onclick="navigateTo('viral');return false;">Viral</a>
       <a href="#" class="nav-link"        data-page="contacto"  onclick="navigateTo('contacto');return false;">Contacto</a>
       <button id="profile-logout" class="nav-link profile-logout" onclick="logout(event)" style="display:none">Cerrar sesión</button>
+      <div id="profile-chip" class="profile-chip profile-chip-nav" style="display:none">
+        <img id="profile-avatar" class="profile-avatar" alt="Perfil">
+      </div>
     </nav>
     <button class="hamburger" onclick="toggleMobileNav()">☰</button>
   </div>

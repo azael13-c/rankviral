@@ -80,6 +80,7 @@ body::after {
 .header-left { display: flex; align-items: center; gap: 10px; }
 .profile-chip { width: 26px; height: 26px; border-radius: 50%; overflow: hidden; border: 1px solid #2b2b2b; }
 .profile-chip { position: relative; cursor: pointer; margin-left: 8px; }
+.profile-chip-nav { margin-left: 6px; }
 .profile-avatar { width: 100%; height: 100%; object-fit: cover; display: block; }
 .profile-logout {
   background: none;
@@ -884,4 +885,5 @@ body::after {
   .art-entry { flex-direction: column; }
   .ae-thumb { width: 100%; height: 140px; min-width: unset; }
   .art-header { padding: 10px 14px; top: calc(env(safe-area-inset-top) + 10px); margin-top: 10px; }
+  .profile-chip { margin-left: 16px; }
 }
