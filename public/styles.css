@@ -549,6 +549,15 @@ body::after {
   visibility: hidden; opacity: 0;
   transition: opacity .3s ease, visibility .3s ease;
 }
+.article-overlay::before {
+  content: "";
+  position: sticky;
+  top: 0;
+  display: block;
+  height: calc(env(safe-area-inset-top) + 10px);
+  background: rgba(8,8,8,.97);
+  z-index: 9;
+}
 .article-overlay.open { visibility: visible; opacity: 1; }
 
 .art-header {
