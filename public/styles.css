@@ -107,7 +107,7 @@ body::after {
 }
 
 /* main nav */
-.main-nav { display: flex; gap: 2px; align-items: center; }
+.main-nav { display: flex; gap: 2px; align-items: center; margin-left: auto; }
 .nav-link {
   color: var(--muted);
   font-family: 'Barlow Condensed', sans-serif;
